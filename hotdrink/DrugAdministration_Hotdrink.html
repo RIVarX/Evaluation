@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Drug Administration</title>
@@ -8,66 +9,72 @@
       border-collapse: collapse;
       margin: auto;
     }
+
     td {
       border: 1px solid black;
       padding: 5px;
       text-align: center;
     }
+
     input {
       border: none;
       text-align: center;
       font-weight: bold;
     }
+
     input[type="number"] {
       width: 60px;
     }
+
     input[readonly] {
       font-style: italic;
     }
-  </style> 
+  </style>
 
   <script type="text/javascript" src="hotdrink.min.js.download"></script>
 
   <script type="text/javascript">
-   function prod( a, b ) { return a * b; }
-   function quot( a, b ) { return a / b; }
+    function prod(a, b) { return a * b; }
+    function quot(a, b) { return a / b; }
 
     var model = new hd.ModelBuilder()
       .variables({
-        drug: 100,
-        concentration: 0.33,
+        concentration: undefined,
+        dose: undefined,
+        rate: undefined,
         volume: 300,
-        dose: 10,
-        duration: 10,
-        rate: 30
+        drug: 100,
+        duration: 10
+
       })
 
-    .constraint('drug, volume, concentration')
-    .method('drug, concentration -> volume', prod)
-    .method('volume, concentration -> drug', quot)
-    .method('drug, volume -> concentration', quot)
+      .constraint('drug, volume, concentration')
+      .method('drug, concentration -> volume', prod)
+      .method('volume, concentration -> drug', quot)
+      .method('drug, volume -> concentration', quot)
 
-    .constraint('volume, duration, rate')
-    .method('volume, rate -> duration', quot)
-    .method('duration, rate -> volume', prod)
-    .method('volume, duration -> rate', quot)
+      .constraint('volume, duration, rate')
+      .method('volume, rate -> duration', quot)
+      .method('duration, rate -> volume', prod)
+      .method('volume, duration -> rate', quot)
 
-    .constraint('drug, duration, dose')
-    .method('drug, dose -> duration', quot)
-    .method('duration, dose -> drug', prod)
-    .method('drug, duration -> dose', quot)
+      .constraint('drug, duration, dose')
+      .method('drug, dose -> duration', quot)
+      .method('duration, dose -> drug', prod)
+      .method('drug, duration -> dose', quot)
 
 
-    .end();
+      .end();
 
     var system = new hd.ConstraintSystem();
     system.addComponent(model);
 
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
       hd.performDeclaredBindings(model);
     });
   </script>
 </head>
+
 <body>
   <table>
     <tr>
@@ -90,12 +97,8 @@
       <td><input id="duration" type="number" data-bind="hd.numVar( duration )"></td>
       <td><input id="rate" type="number" data-bind="hd.numVar( rate )"></td>
     </tr>
-</table>
-<script>/*
-    document.getElementById("volume").dispatchEvent(new Event('change'));
-    document.getElementById("drug").dispatchEvent(new Event('change'));
-    document.getElementById("duration").dispatchEvent(new Event('change'));
-*/
-</script>
+  </table>
+
 </body>
-</html> 
+
+</html>
