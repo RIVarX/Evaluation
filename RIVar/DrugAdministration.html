@@ -30,41 +30,41 @@
       font-style: italic;
     }
   </style>
-    <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
-    <script src="https://unpkg.com/rivarjs/dist/rivar.umd.js"></script>
-  
+  <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
+  <script src="https://unpkg.com/rivarjs/dist/rivar.umd.js"></script>
+
   <script>
     var { RIVar, lift, Signal } = rivarjs;
 
-    const div = (x, y) => x / y;
+    const div = (x, y) => (x / y).toFixed(2);
     const mul = (x, y) => x * y;
   </script>
 
-    <script src="Bag.js"></script>
-    <script src="Pump.js"></script>
+  <script src="Bag.js"></script>
+  <script src="Pump.js"></script>
 
-    <script>
-  
-      function bind(inputID, variable) {
-  
-        var input = document.getElementById(inputID);
-  
-        input.addEventListener('input', (event) => {
-          const value = event.target.value;
-          variable.next(new Signal(value));
-          input.style.fontStyle = "normal";
-        });
-  
-        variable.subscribe((signal) => {
-          if (!(parseFloat(input.value) == signal.value.toFixed(2))) {
-            input.value = signal.value.toFixed(2);
-            input.style.fontStyle = "italic";
-          }
-        });
-  
-      }
-  
-    </script>
+  <script>
+
+    function bind(inputID, variable) {
+
+      var input = document.getElementById(inputID);
+
+      input.addEventListener('input', (event) => {
+        const value = event.target.value;
+        variable.next(new Signal(value));
+        input.style.fontStyle = "normal";
+      });
+
+      variable.subscribe((signal) => {
+        if (input.value !== signal.value.toString()) {
+          input.value = signal.value.toString();
+          input.style.fontStyle = "italic";
+        }
+      });
+
+    }
+
+  </script>
 
 </head>
 
